@@ -18,8 +18,10 @@ public class FragmentEntrarDatos extends Fragment implements View.OnClickListene
 
     String user;
     String password;
+
     EditText usuario;
     EditText contraseña;
+
     Button CrearNuevoUser;
     Button IngresarUser;
     public View onCreateView (LayoutInflater InfladorDeLayouts, ViewGroup GrupoDeLaVista, Bundle DatosRecibidos)
@@ -31,9 +33,8 @@ public class FragmentEntrarDatos extends Fragment implements View.OnClickListene
         Log.d("FragmentEntrarDatos", "a punto de retornar");
 
         usuario = (EditText) VistaADevolver.findViewById(R.id.usuario);
-        user = usuario.getText().toString().trim();
         contraseña = (EditText) VistaADevolver.findViewById(R.id.contraseña);
-        password = usuario.getText().toString().trim();
+
 
 
         Log.d("FragmentEntrarDatos", "-1");
@@ -52,7 +53,10 @@ public class FragmentEntrarDatos extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v)
     {
+        user = usuario.getText().toString().trim();
+        password = contraseña.getText().toString().trim();
+
         ActividadPrincipal actividadPrincipal = (ActividadPrincipal) getActivity();
-        actividadPrincipal.CambiaFragment(v, user, password, null);
+        actividadPrincipal.CambiaFragment(v, user, password, false);
     }
 }
