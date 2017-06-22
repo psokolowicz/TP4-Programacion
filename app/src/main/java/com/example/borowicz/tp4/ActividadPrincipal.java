@@ -3,8 +3,7 @@ package com.example.borowicz.tp4;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
+
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,7 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.util.Date;
+import java.util.ArrayList;
+
 
 public class ActividadPrincipal extends AppCompatActivity {
 
@@ -25,6 +25,8 @@ public class ActividadPrincipal extends AppCompatActivity {
 
     private SQLite DBaccess;
     private SQLiteDatabase database;
+
+    public ArrayList<String> listaDevolver = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -74,6 +76,8 @@ public class ActividadPrincipal extends AppCompatActivity {
                          TransaccionDeFragment.replace(R.id.holder, frgMuestraUsuarios);
                          Log.d("ActPrin", "ya remplazo el holder");
                          TransaccionDeFragment.commit();
+
+                         listaDevolver = obtenerUsuarios();
 
                          Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show();
                      }
@@ -135,6 +139,8 @@ public class ActividadPrincipal extends AppCompatActivity {
                          }
                          else
                          {
+                             guardaUsuario(usuario, contraseña);
+
                              FragmentMuestraUsuarios frgMuestraUsuarios;
                              Log.d("ActPrin", "Instanciando el frgCrearUsuario");
                              frgMuestraUsuarios = new FragmentMuestraUsuarios();
@@ -142,8 +148,6 @@ public class ActividadPrincipal extends AppCompatActivity {
                              TransaccionDeFragment.replace(R.id.holder, frgMuestraUsuarios);
                              Log.d("ActPrin", "ya remplazo el holder");
                              TransaccionDeFragment.commit();
-
-                             guardaUsuario(usuario, contraseña);
 
                              Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show();
                          }
@@ -187,9 +191,6 @@ public class ActividadPrincipal extends AppCompatActivity {
         else
             respuesta = false;
 
-        Date fechaActual = new Date();
-        int dia = fechaActual.getDay();
-
         return respuesta;
     }
 
@@ -225,4 +226,37 @@ public class ActividadPrincipal extends AppCompatActivity {
 
         return false;
     }
+
+    public ArrayList<String> obtenerUsuarios()
+    {
+        try
+        {
+            if(baseDeDatosAbierta())
+            {
+                Cursor conjuntoDeRegistros;
+                conjuntoDeRegistros = database.rawQuery("select usuario from usuarios;", null);
+                String usuarioActual = "";
+                ArrayList<String> listaDevolver = new ArrayList<String>();
+                if (conjuntoDeRegistros.moveToFirst() == true) {
+                    do {
+                        Log.d("obtenerUsuarios", "esta por cargar un usuario al array");
+                        usuarioActual = conjuntoDeRegistros.getString(0);
+                        listaDevolver.add(usuarioActual);
+
+                    }
+                    while (conjuntoDeRegistros.moveToNext() == true);
+
+                }
+                Log.d("obtenerUsuarios", "esta por retornar la lista");
+            }
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Error, pasese a constru", Toast.LENGTH_SHORT);
+        }
+
+        database.close();
+        return listaDevolver;
+    }
+
 }
