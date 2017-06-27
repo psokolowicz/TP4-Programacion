@@ -2,8 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_gravity="center_horizontal"
+    android:layout_gravity="center"
+    android:gravity="center"
     android:layout_height="match_parent">
+
+
 
     <EditText
         android:id="@+id/usuario"
@@ -11,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="130dp"
         android:hint="Usuario" />
 
     <EditText
@@ -20,7 +22,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:hint="Contraseña"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/contraseña"
         android:inputType="textPassword"
         />
@@ -34,6 +36,26 @@
         android:id="@+id/confContraseña"
         android:inputType="textPassword"
         />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Numero preferido"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:inputType="number"
+        android:layout_marginTop="30dp"
+        android:id="@+id/txtNumPref"
+        />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tengo un spinner"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="30dp"
+        />
 
     <Button
         android:layout_width="match_parent"
@@ -43,7 +65,7 @@
         android:textSize="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         />
 
 </LinearLayout>
