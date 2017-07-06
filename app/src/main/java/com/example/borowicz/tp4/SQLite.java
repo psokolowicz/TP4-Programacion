@@ -16,7 +16,7 @@ public class SQLite extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String consulta;
-        consulta = "create table usuarios (usuario text, password text)";
+        consulta = "create table usuarios (usuario text, pass text)";
         db.execSQL(consulta);
     }
 

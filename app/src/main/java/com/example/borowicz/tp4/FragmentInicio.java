@@ -32,6 +32,6 @@ public class FragmentInicio extends Fragment implements View.OnClickListener
     public void onClick(View v)
     {
         ActividadPrincipal actividadPrincipal = (ActividadPrincipal) getActivity();
-        actividadPrincipal.CambiaFragment(v, null, null, false);
+        actividadPrincipal.CambiaFragment(v, null, null, -10, false, false);
     }
 }

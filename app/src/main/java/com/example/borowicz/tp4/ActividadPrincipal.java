@@ -4,17 +4,20 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import android.os.StrictMode;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 
@@ -26,13 +29,25 @@ public class ActividadPrincipal extends AppCompatActivity {
     private SQLite DBaccess;
     private SQLiteDatabase database;
 
+    public static boolean traerTodosLosUsuarios = false;
+
+    public static String usuario = "";
+    public static String password = "";
+    public static int numeroPreferido;
+    public static boolean tieneSpinner = false;
+
     public ArrayList<String> listaDevolver = new ArrayList<String>();
+    public ArrayList<usuario> listaUsuarios = new ArrayList<usuario>();
+
+    public static usuario oUsuario = new usuario();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actividad_principal);
+
+        hiloMySQL.start();
 
         Log.d("ActPrin", "Instanciando por 1era vez el admfrg");
         AdministradorDeFragments = getSupportFragmentManager();
@@ -49,7 +64,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         Log.d("ActPrin", "ya hizo commit");
     }
 
-     public void CambiaFragment(View vista, String usuario, String contraseña, boolean errores)
+     public void CambiaFragment(View vista, String usuario, String contraseña, int numeroPreferido, boolean tieneSpinner, boolean errores)
      {
          if (vista.getId() == R.id.EntrarAplicacion)
          {
@@ -201,7 +216,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         nuevoRegistro = new ContentValues();
 
         nuevoRegistro.put("usuario", nombre);
-        nuevoRegistro.put("password", contraseña);
+        nuevoRegistro.put("pass", contraseña);
 
         database.insert("usuarios", null, nuevoRegistro);
     }
@@ -258,5 +273,81 @@ public class ActividadPrincipal extends AppCompatActivity {
         database.close();
         return listaDevolver;
     }
+
+    Thread hiloMySQL = new Thread()
+    {
+        @Override
+        public  void run()
+        {
+            try
+            {
+                Class.forName("com.mysql.jdbc.Driver");
+
+                String rutaServidorMySQL, nombreBaseDatos, nombreUsuario, passwordUsuario, cadenaCompletaConexion;
+                int puertoServidor;
+
+                rutaServidorMySQL="127.0.0.1";
+                puertoServidor=3306;
+                nombreBaseDatos="database";
+                nombreUsuario="root";
+                passwordUsuario="root";
+
+                cadenaCompletaConexion="jdbc:mysql://"+rutaServidorMySQL+":"+puertoServidor+"/"+nombreBaseDatos;
+
+                Connection conexion = DriverManager.getConnection(cadenaCompletaConexion, nombreUsuario, passwordUsuario);
+
+                Statement instruccion = conexion.createStatement();
+
+                if(!traerTodosLosUsuarios)
+                {
+
+                    String SQLEscritura = "insert into usuarios (usuario, pass, numeroPreferido, tieneSpinner) values (" + usuario + ", " + password + ", " + numeroPreferido + ", " + tieneSpinner + ");";
+
+                    boolean resultado = instruccion.execute(SQLEscritura);
+
+                    if (!resultado) {
+                        Log.d("Thread", "no se guardo, resultado es false");
+                    } else {
+                        Log.d("Thread", "se guardo, resultado es true");
+                    }
+                }
+                else
+                {
+                    String SQLLectura = "select * from usuarios;";
+
+                    ResultSet resultados = instruccion.executeQuery(SQLLectura);
+
+                    if(resultados.first())
+                    {
+                        oUsuario.setId(resultados.getInt("id"));
+                        oUsuario.setNomUsuario(resultados.getString("usuario"));
+                        oUsuario.setPassword(resultados.getString("pass"));
+                        oUsuario.setNumeroPreferido(resultados.getInt("numeroPreferido"));
+                        oUsuario.setTieneSpinner(resultados.getBoolean("numeroPreferido"));
+
+                        listaUsuarios.add(oUsuario);
+
+                        while(resultados.next())
+                        {
+                            oUsuario = new usuario();
+                            oUsuario.setId(resultados.getInt("id"));
+                            oUsuario.setNomUsuario(resultados.getString("usuario"));
+                            oUsuario.setPassword(resultados.getString("pass"));
+                            oUsuario.setNumeroPreferido(resultados.getInt("numeroPreferido"));
+                            oUsuario.setTieneSpinner(resultados.getBoolean("numeroPreferido"));
+
+                            listaUsuarios.add(oUsuario);
+                        }
+                    }
+                }
+            }
+            catch (ClassNotFoundException error)
+            {
+
+            } catch (SQLException error) {
+                error.printStackTrace();
+            }
+        }
+    };
 
 }

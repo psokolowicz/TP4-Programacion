@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 /**
@@ -15,12 +16,13 @@ import android.widget.EditText;
 
 public class FragmentEntrarDatos extends Fragment implements View.OnClickListener
 {
-
     String user;
-    String password;
+    String pass;
+
 
     EditText usuario;
     EditText contraseña;
+
 
     Button CrearNuevoUser;
     Button IngresarUser;
@@ -54,9 +56,10 @@ public class FragmentEntrarDatos extends Fragment implements View.OnClickListene
     public void onClick(View v)
     {
         user = usuario.getText().toString().trim();
-        password = contraseña.getText().toString().trim();
+        pass = contraseña.getText().toString().trim();
+
 
         ActividadPrincipal actividadPrincipal = (ActividadPrincipal) getActivity();
-        actividadPrincipal.CambiaFragment(v, user, password, false);
+        actividadPrincipal.CambiaFragment(v, user, pass, -10, false, false);
     }
 }

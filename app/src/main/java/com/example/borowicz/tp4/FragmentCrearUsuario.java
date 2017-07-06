@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,13 +16,17 @@ import java.util.regex.Pattern;
 public class FragmentCrearUsuario extends Fragment implements View.OnClickListener
 {
     String user;
-    String password;
+    String pass;
     String confPassword;
+    int numPref;
+    boolean spinner=false;
 
     Button Registrar;
     EditText usuario;
     EditText contraseña;
     EditText confContraseña;
+    EditText numeroPreferido;
+    CheckBox tieneSpinner;
 
     boolean errores;
 
@@ -37,6 +41,8 @@ public class FragmentCrearUsuario extends Fragment implements View.OnClickListen
         usuario = (EditText) VistaADevolver.findViewById(R.id.usuario);
         contraseña = (EditText) VistaADevolver.findViewById(R.id.contraseña);
         confContraseña = (EditText) VistaADevolver.findViewById(R.id.confContraseña);
+        numeroPreferido = (EditText) VistaADevolver.findViewById(R.id.txtNumPref);
+        tieneSpinner = (CheckBox) VistaADevolver.findViewById(R.id.tieneSpinner);
 
         Registrar = (Button) VistaADevolver.findViewById(R.id.Registrar);
         Registrar.setOnClickListener(this);
@@ -48,15 +54,22 @@ public class FragmentCrearUsuario extends Fragment implements View.OnClickListen
     public void onClick(View v)
     {
         user = usuario.getText().toString().trim();
-        password = contraseña.getText().toString().trim();
+        pass = contraseña.getText().toString().trim();
         confPassword = confContraseña.getText().toString().trim();
+
+        numPref = Integer.parseInt(tieneSpinner.getText().toString().trim());
+
+        if(tieneSpinner.isChecked())
+        {
+            spinner=true;
+        }
 
         //#RegEx
         String PASSWORD_PATTERN = "^[a-zA-Z0-9._-]{8,12}$";
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
-        Matcher matcher = pattern.matcher(password);
+        Matcher matcher = pattern.matcher(pass);
 
-        if(password.equals(confPassword) && matcher.matches())
+        if(pass.equals(confPassword) && matcher.matches())
         {
             errores=false;
         }
@@ -66,6 +79,6 @@ public class FragmentCrearUsuario extends Fragment implements View.OnClickListen
         }
 
         ActividadPrincipal actividadPrincipal = (ActividadPrincipal) getActivity();
-        actividadPrincipal.CambiaFragment(v, user, password, errores);
+        actividadPrincipal.CambiaFragment(v, user, pass, numPref, spinner, errores);
     }
 }
