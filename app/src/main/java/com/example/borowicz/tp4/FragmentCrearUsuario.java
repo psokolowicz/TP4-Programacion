@@ -57,7 +57,7 @@ public class FragmentCrearUsuario extends Fragment implements View.OnClickListen
         pass = contraseña.getText().toString().trim();
         confPassword = confContraseña.getText().toString().trim();
 
-        numPref = Integer.parseInt(tieneSpinner.getText().toString().trim());
+        numPref = Integer.parseInt(numeroPreferido.getText().toString().trim());
 
         if(tieneSpinner.isChecked())
         {

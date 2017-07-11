@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -30,11 +31,14 @@ public class ActividadPrincipal extends AppCompatActivity {
     private SQLiteDatabase database;
 
     public static boolean traerTodosLosUsuarios = false;
+    public static boolean ingresar = false;
+    public static boolean registrar = false;
 
     public static String usuario = "";
     public static String password = "";
     public static int numeroPreferido;
     public static boolean tieneSpinner = false;
+
 
     public ArrayList<String> listaDevolver = new ArrayList<String>();
     public ArrayList<usuario> listaUsuarios = new ArrayList<usuario>();
@@ -47,7 +51,7 @@ public class ActividadPrincipal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.actividad_principal);
 
-        hiloMySQL.start();
+
 
         Log.d("ActPrin", "Instanciando por 1era vez el admfrg");
         AdministradorDeFragments = getSupportFragmentManager();
@@ -75,29 +79,39 @@ public class ActividadPrincipal extends AppCompatActivity {
              TransaccionDeFragment.replace(R.id.holder, frgEntrarDatos);
              Log.d("ActPrin", "ya remplazo el holder");
              TransaccionDeFragment.commit();
+
          }
          else if(vista.getId() == R.id.Ingresar)
          {
-             try
-             {
-                 if (baseDeDatosAbierta())
-                 {
-                     if (exiteUsuario(usuario))
-                     {
+            // try
+            // {
+               //  if (baseDeDatosAbierta())
+                 //{
+                     //if (exiteUsuario(usuario))
+                    // {
                          FragmentMuestraUsuarios frgMuestraUsuarios;
                          Log.d("ActPrin", "Instanciando el frgMuestraUsuarios");
                          frgMuestraUsuarios = new FragmentMuestraUsuarios();
                          TransaccionDeFragment=AdministradorDeFragments.beginTransaction();
                          TransaccionDeFragment.replace(R.id.holder, frgMuestraUsuarios);
                          Log.d("ActPrin", "ya remplazo el holder");
+
+                         traerTodosLosUsuarios=true;
+                         ingresar=true;
+
+                         hiloMySQL.start();
+
+                         ingresar=false;
+                         traerTodosLosUsuarios=false;
+
                          TransaccionDeFragment.commit();
 
-                         listaDevolver = obtenerUsuarios();
+                         //listaDevolver = obtenerUsuarios();
 
                          Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show();
-                     }
-                     else
-                     {
+                     //}
+                   //  else
+                    /* {
                          FragmentCrearUsuario frgCrearUsuario;
                          Log.d("ActPrin", "Instanciando el frgCrearUsuario");
                          frgCrearUsuario = new FragmentCrearUsuario();
@@ -108,15 +122,15 @@ public class ActividadPrincipal extends AppCompatActivity {
 
                          Toast.makeText(this, "No estas registrado, acá podes hacerlo.", Toast.LENGTH_SHORT).show();
 
-                     }
+                     }*/
 
-                     database.close();
-                 }
-             }
-             catch (Exception e)
-             {
-                 Toast.makeText(this, "Error, pasese a constru", Toast.LENGTH_SHORT);
-             }
+                     //database.close();
+                // }
+             //}
+            // catch (Exception e)
+          //   {
+           //     Toast.makeText(this, "Error, pasese a constru", Toast.LENGTH_SHORT);
+           //  }
 
          }
          else if(vista.getId() == R.id.CrearNuevoUser)
@@ -136,27 +150,32 @@ public class ActividadPrincipal extends AppCompatActivity {
              if(errores==false)
              {
 
-                 try
-                 {
-                     if (baseDeDatosAbierta())
-                     {
-                         if (exiteUsuario(usuario))
-                         {
+                // try
+                 //{
+                   //  if (baseDeDatosAbierta())
+                     //{
+                    //     if (exiteUsuario(usuario))
+                        // {
                              FragmentEntrarDatos frgEntrarDatos;
                              Log.d("ActPrin", "Instanciando el frgEntrarDatos");
                              frgEntrarDatos = new FragmentEntrarDatos();
                              TransaccionDeFragment=AdministradorDeFragments.beginTransaction();
                              TransaccionDeFragment.replace(R.id.holder, frgEntrarDatos);
                              Log.d("ActPrin", "ya remplazo el holder");
+
+
+                             registrar=true;
+                             hiloMySQL.start();
+                             registrar=false;
+
                              TransaccionDeFragment.commit();
 
-                             Toast.makeText(this, "Ya estás registrado, acá podes loguearte.", Toast.LENGTH_SHORT).show();
-                         }
-                         else
-                         {
-                             guardaUsuario(usuario, contraseña);
+                      //   }
+                         //else
+                         //{
+                             //guardaUsuario(usuario, contraseña);
 
-                             FragmentMuestraUsuarios frgMuestraUsuarios;
+                             /*FragmentMuestraUsuarios frgMuestraUsuarios;
                              Log.d("ActPrin", "Instanciando el frgCrearUsuario");
                              frgMuestraUsuarios = new FragmentMuestraUsuarios();
                              TransaccionDeFragment = AdministradorDeFragments.beginTransaction();
@@ -164,13 +183,13 @@ public class ActividadPrincipal extends AppCompatActivity {
                              Log.d("ActPrin", "ya remplazo el holder");
                              TransaccionDeFragment.commit();
 
-                             Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show();
-                         }
+                             Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show();*/
+                        // }
 
-                         database.close();
-                     }
-                 }
-                 catch (Exception e)
+                        // database.close();
+                     //}
+                 //}
+                /* catch (Exception e)
                  {
                      FragmentCrearUsuario frgCrearUsuario;
                      Log.d("ActPrin", "Instanciando el frgCrearUsuario");
@@ -181,7 +200,7 @@ public class ActividadPrincipal extends AppCompatActivity {
                      TransaccionDeFragment.commit();
 
                      Toast.makeText(this, "Error, pasese a constru", Toast.LENGTH_SHORT);
-                 }
+                 }*/
 
 
 
@@ -195,7 +214,7 @@ public class ActividadPrincipal extends AppCompatActivity {
      }
 
 
-    public Boolean baseDeDatosAbierta()
+   /* public Boolean baseDeDatosAbierta()
     {
         Boolean respuesta;
         DBaccess = new SQLite(this, "usuarios", null, 1);
@@ -272,7 +291,7 @@ public class ActividadPrincipal extends AppCompatActivity {
 
         database.close();
         return listaDevolver;
-    }
+    }*/
 
     Thread hiloMySQL = new Thread()
     {
@@ -286,7 +305,7 @@ public class ActividadPrincipal extends AppCompatActivity {
                 String rutaServidorMySQL, nombreBaseDatos, nombreUsuario, passwordUsuario, cadenaCompletaConexion;
                 int puertoServidor;
 
-                rutaServidorMySQL="127.0.0.1";
+                rutaServidorMySQL="192.168.56.1";
                 puertoServidor=3306;
                 nombreBaseDatos="database";
                 nombreUsuario="root";
@@ -298,7 +317,7 @@ public class ActividadPrincipal extends AppCompatActivity {
 
                 Statement instruccion = conexion.createStatement();
 
-                if(!traerTodosLosUsuarios)
+                if(registrar)
                 {
 
                     String SQLEscritura = "insert into usuarios (usuario, pass, numeroPreferido, tieneSpinner) values (" + usuario + ", " + password + ", " + numeroPreferido + ", " + tieneSpinner + ");";
@@ -306,12 +325,13 @@ public class ActividadPrincipal extends AppCompatActivity {
                     boolean resultado = instruccion.execute(SQLEscritura);
 
                     if (!resultado) {
-                        Log.d("Thread", "no se guardo, resultado es false");
+                        Log.d("ThreadLOG", "no se guardo, resultado es false");
                     } else {
-                        Log.d("Thread", "se guardo, resultado es true");
+                        Log.d("ThreadLOG", "se guardo, resultado es true");
                     }
+
                 }
-                else
+                else if(traerTodosLosUsuarios)
                 {
                     String SQLLectura = "select * from usuarios;";
 
@@ -340,13 +360,37 @@ public class ActividadPrincipal extends AppCompatActivity {
                         }
                     }
                 }
+                else if(ingresar)
+                {
+                    String SQLLectura = "select * from usuarios where usuario="+usuario+" and pass="+password+";";
+
+                    ResultSet resultados = instruccion.executeQuery(SQLLectura);
+
+                    if(resultados.first())
+                    {
+                        oUsuario.setId(resultados.getInt("id"));
+                        oUsuario.setNomUsuario(resultados.getString("usuario"));
+                        oUsuario.setPassword(resultados.getString("pass"));
+                        oUsuario.setNumeroPreferido(resultados.getInt("numeroPreferido"));
+                        oUsuario.setTieneSpinner(resultados.getBoolean("numeroPreferido"));
+
+                    }
+                }
+
             }
             catch (ClassNotFoundException error)
             {
-
+                Log.d("THREADLOGCATCH", error.toString());
             } catch (SQLException error) {
                 error.printStackTrace();
+                Log.d("THREADLOGCATCH", error.toString());
+
             }
+            catch (Exception error)
+            {
+                Log.d("THREADLOGCATCH", error.toString());
+            }
+
         }
     };
 

@@ -25,13 +25,13 @@ public class FragmentMuestraUsuarios extends Fragment
     {
         ActividadPrincipal actividadPrincipal = (ActividadPrincipal) getActivity();
         Log.d("FragmentMuestraUsuarios", "esta por llamar a obtenerUsuarios");
-        listaUsuarios = actividadPrincipal.obtenerUsuarios();
+        //listaUsuarios = actividadPrincipal.obtenerUsuarios();
         Log.d("FragmentMuestraUsuarios", "desp de obtener usuarios ");
-        adaptador = new ArrayAdapter<String>(GrupoDeLaVista.getContext(), android.R.layout.simple_dropdown_item_1line, listaUsuarios);
+        //adaptador = new ArrayAdapter<String>(GrupoDeLaVista.getContext(), android.R.layout.simple_dropdown_item_1line, listaUsuarios);
 
-        spn = (Spinner) actividadPrincipal.findViewById(R.id.spinner);
+        //spn = (Spinner) actividadPrincipal.findViewById(R.id.spinner);
         Log.d("FragmentMuestraUsuarios", "esta por llenar el spinner");
-        spn.setAdapter(adaptador);
+        //spn.setAdapter(adaptador);
 
 
         View VistaADevolver;

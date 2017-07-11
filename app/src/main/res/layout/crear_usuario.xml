@@ -14,12 +14,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:text="Riff"
         android:hint="Usuario" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:text="holahola123"
         android:layout_marginRight="10dp"
         android:hint="Contraseña"
         android:layout_marginTop="10dp"
@@ -29,6 +31,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="holahola123"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:hint="Confirme contraseña"
@@ -40,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Numero preferido"
+        android:text="5"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:inputType="number"
