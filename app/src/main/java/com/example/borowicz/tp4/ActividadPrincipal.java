@@ -305,13 +305,13 @@ public class ActividadPrincipal extends AppCompatActivity {
                 String rutaServidorMySQL, nombreBaseDatos, nombreUsuario, passwordUsuario, cadenaCompletaConexion;
                 int puertoServidor;
 
-                rutaServidorMySQL="192.168.56.1";
-                puertoServidor=3306;
+                rutaServidorMySQL="https://trabajopracticocinco.scm.azurewebsites.net/";
+                puertoServidor=56473;
                 nombreBaseDatos="database";
-                nombreUsuario="root";
-                passwordUsuario="root";
+                nombreUsuario="azure";
+                passwordUsuario="6#vWHD_$";
 
-                cadenaCompletaConexion="jdbc:mysql://"+rutaServidorMySQL+":"+puertoServidor+"/"+nombreBaseDatos;
+                cadenaCompletaConexion="jdbc:mysql://"+rutaServidorMySQL+":"+puertoServidor+":"+nombreBaseDatos;
 
                 Connection conexion = DriverManager.getConnection(cadenaCompletaConexion, nombreUsuario, passwordUsuario);
 
